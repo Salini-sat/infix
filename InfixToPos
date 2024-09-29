@@ -1,0 +1,45 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Stack{
+    int *arr;
+    int size;
+    int top;
+};
+
+int StackTop(struct Stack *sp){
+    return sp->arr[sp->top];
+}
+char* inToPos(char *Infix){
+    struct Stack *sp;
+    sp->size =100;
+    sp->top=-1;
+    sp->arr= (char*) malloc(sp->size*sizeof(char));
+
+    char* Pos= (char*)malloc((strlen(Infix)+1)*sizeof(char));
+    int i=0;
+    int j=0;
+    while(Infix[i]!='\0'){
+        if(!isOperator(Infix[i])){
+            Pos[j]=Infix[i];
+            i++;
+            j++;
+        }
+        else{
+            if(precedence(Infix[i])>precedence(StackTop(sp))){
+                push(sp,Infix[i]);
+            }
+            else{
+                Pos[j]= push(sp);
+                j++;
+            }
+        }
+    }
+}
+
+int main(){
+    char *Infix = "a-b/t+i";
+    char *Postfix(Infix);
+    printf("Postfix: %s\n", Postfix);
+    return 0;
+}
